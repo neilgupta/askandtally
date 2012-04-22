@@ -11,12 +11,12 @@ if ($sms->inboundText()) {
 	$text = trim($sms->text);
 	
 	// new poll
-	if (strcasecmp($text, 'new') == 0) {
+	if (strcasecmp($text, 'ask') == 0) {
 		// Create new poll and text user
 		function createPoll($sms) {
 			mysql_query("INSERT INTO Poll (phone, isActive) VALUES ('$sms->from', 1)");
 			$id = mysql_insert_id();
-			$sms->reply("You've created a new poll! Tell others to text '$id [letter of choice]' to 305-222-7004 to vote. Reply 'STOP $id' to stop this poll and get results.");
+			$sms->reply("You've asked a new poll! Tell others to text '$id [letter of choice]' to 305-222-7004 to vote. Reply 'TALLY $id' to stop this poll and get results.");
 		}
 
 		// Find this user
@@ -43,9 +43,8 @@ if ($sms->inboundText()) {
 	}
 	
 	// stop existing poll
-	else if (strncasecmp($text, 'stop', 4) == 0) {
-		// stop an existing quiz if it's active
-		$code = trim(substr($text, 4));
+	else if (strncasecmp($text, 'tally', 5) == 0) {
+		$code = trim(substr($text, 5));
 		$result = mysql_query("SELECT * FROM Poll WHERE id = $code AND phone = $sms->from AND isActive = 1");
 		if (mysql_num_rows($result) == 0) {
     		$sms->reply('Sorry that poll code was not recognized, or may not be active anymore.');
