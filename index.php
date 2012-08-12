@@ -4,9 +4,9 @@ $sms = new NexmoMessage('1fe96e8b', '1cd7c544');
 
 if ($sms->inboundText()) {
 	// database details
-	$con = mysql_connect('localhost', 'alankarn_aat', '$o:Dm@&ptkL>dFcrpYJjqcHCVEpcp)dhJGVVB}x&7LZq,i7(kP');
+	$con = mysql_connect(getenv('MYSQL_DB_HOST'), getenv('MYSQL_USERNAME'), getenv('MYSQL_PASSWORD'));
 	if (!$con) { die('Could not connect: ' . mysql_error()); }
-	mysql_select_db('alankarn_askandtally', $con);
+	mysql_select_db(getenv('MYSQL_DB_NAME'), $con);
 
 	$text = trim($sms->text);
 	
