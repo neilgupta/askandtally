@@ -1,6 +1,6 @@
 <?php
 include("NexmoMessage.php");
-$sms = new NexmoMessage('1fe96e8b', '1cd7c544');
+$sms = new NexmoMessage(getenv('key'), getenv('secret'));
 
 if ($sms->inboundText()) {
 	// database details
